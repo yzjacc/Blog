@@ -6,7 +6,7 @@ var app = new express();
 
 app.use(express.static("./page/"));
 
-for(var [key] of loader){
+for(var [key,value] of loader){
 	if (key == "/editEveryDay" ) {
 		app.post("/editEveryDay", loader.get("/editEveryDay"));
 	}else if( key == "/editBlog"){
