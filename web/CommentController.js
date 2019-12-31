@@ -8,7 +8,6 @@ var path = new Map();
 
 
 function addComment(request, response) {
-    console.log("+++++++++++")
     var params = url.parse(request.url, true).query;
 
     commentDao.insertComment(parseInt(params.bid), parseInt(params.parent), params.parentName, params.userName, params.email, params.content, timeUtil.getNow(), timeUtil.getNow(), function (result) {
