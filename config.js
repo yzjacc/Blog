@@ -1,7 +1,6 @@
 var fs = require("fs");
 
-var globalConfig = {
-};
+var globalConfig = {};
 
 var conf = fs.readFileSync("./server.conf");
 

@@ -3,8 +3,8 @@ var tagsDao = require("../dao/TagsDao");
 var tagBlogMappingDao = require("../dao/TagBlogMappingDao");
 var timeUtil = require("../util/TimeUtil");
 var respUtil = require("../util/RespUtil");
+var fileUtil = require('../util/FileUtil')
 var url = require("url");
-
 var path = new Map();
 
 function queryHotBlog(request, response) {
@@ -63,8 +63,9 @@ path.set("/queryBlogByPage", queryBlogByPage);
 function editBlog(request, response) {
     var params = url.parse(request.url, true).query;
     var tags = params.tags.replace(/ /g, "").replace("，", ",");
-    request.on("data", function (data) {
-        blogDao.insertBlog(params.title, data.toString(), tags, 0, timeUtil.getNow(), timeUtil.getNow(), function (result) {
+    var conUrl = params.content.toString();
+    fileUtil.reData(conUrl,1,function () {
+        blogDao.insertBlog(params.title, fileUtil.template(),tags, 0, timeUtil.getNow(), timeUtil.getNow(),fileUtil.filename(), function (result) {
             response.writeHead(200);
             response.write(respUtil.writeResult("success", "添加成功", null));
             response.end();
@@ -77,17 +78,34 @@ function editBlog(request, response) {
                 queryTag(tagList[i], blogId);
             }
         });
-    });
+
+    })
+    // request_one(conUrl).pipe(stream).on("close", function () {
+    //     blogDao.insertBlog(params.title, fileUtil.template(),tags, 0, timeUtil.getNow(), timeUtil.getNow(), function (result) {
+    //         response.writeHead(200);
+    //         response.write(respUtil.writeResult("success", "添加成功", null));
+    //         response.end();
+    //         var blogId = result.insertId;
+    //         var tagList = tags.split(",");
+    //         for (var i = 0 ; i < tagList.length ; i ++) {
+    //             if (tagList[i] == "") {
+    //                 continue;
+    //             }
+    //             queryTag(tagList[i], blogId);
+    //         }
+    //     });
+    //
+    // });
 }
 path.set("/editBlog", editBlog);
 
 function queryTag(tag, blogId) {
     tagsDao.queyrTag(tag, function (result) {
-       if (result == null || result.length == 0) {
+        if (result == null || result.length == 0) {
             insertTag(tag, blogId);
-       } else {
-           tagBlogMappingDao.insertTagBlogMapping(result[0].id, blogId, timeUtil.getNow(), timeUtil.getNow(), function (result) {});
-       }
+        } else {
+            tagBlogMappingDao.insertTagBlogMapping(result[0].id, blogId, timeUtil.getNow(), timeUtil.getNow(), function (result) {});
+        }
     });
 }
 path.set("/queryTag", queryTag);
@@ -97,6 +115,7 @@ function insertTag(tag, blogId) {
         insertTagBlogMapping(result.insertId, blogId);
     });
 }
+
 path.set("/insertTag", insertTag);
 
 function insertTagBlogMapping(tagId, blogId) {

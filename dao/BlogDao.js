@@ -1,9 +1,8 @@
 var dbutil = require("./DBUtil");
 
-function insertBlog(title, content, tags, views, ctime, utime, success) {
-    var insertSql = "insert into blog (`title`, `content`, `tags`, `views`, `ctime`, `utime`) values (?, ?, ?, ?, ?, ?)";
-    var params = [title, content, tags, views, ctime, ctime];
-
+function insertBlog(title, content, tags, views, ctime, utime,filename, success) {
+    var insertSql = "insert into blog (`title`, `content`, `tags`, `views`, `ctime`, `utime`,`filename`) values (?, ?, ?, ?, ?, ?,?)";
+    var params = [title, content, tags, views, ctime, ctime,filename];
     var connection = dbutil.createConnection();
     connection.connect();
     connection.query(insertSql, params, function (error, result) {
@@ -112,10 +111,26 @@ function queryHotBlog(size, success) {
     connection.end();
 }
 
+function updadaBlog(content,filename, success) {
+    var querySql = "update blog set `content` = ? where `filename` = ?";
+    var params = [content,filename];
+    var connection = dbutil.createConnection();
+    connection.connect();
+    connection.query(querySql, params, function (error, result) {
+        if (error == null) {
+            success(result);
+        } else {
+            console.log(error);
+        }
+    });
+    connection.end();
+}
+
 module.exports.insertBlog = insertBlog;
 module.exports.queryBlogByPage = queryBlogByPage;
 module.exports.queryBlogCount = queryBlogCount;
 module.exports.queryBlogById = queryBlogById;
 module.exports.queryAllBlog = queryAllBlog;
 module.exports.addViews = addViews;
+module.exports.updadaBlog = updadaBlog;
 module.exports.queryHotBlog = queryHotBlog;

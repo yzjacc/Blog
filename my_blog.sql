@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 31/12/2019 11:08:34
+ Date: 04/01/2020 20:27:13
 */
 
 SET NAMES utf8mb4;
@@ -29,16 +29,10 @@ CREATE TABLE `blog` (
   `ctime` double(17,0) NOT NULL,
   `utime` double(17,0) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `filename` varchar(255) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_ctime` (`ctime`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- ----------------------------
--- Records of blog
--- ----------------------------
-BEGIN;
-INSERT INTO `blog` VALUES ('我的第一篇blog', 'very good', 0, 'blog', 1577716720102, 1577716720102, 36);
-COMMIT;
+) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Table structure for comments
@@ -57,13 +51,6 @@ CREATE TABLE `comments` (
   PRIMARY KEY (`id`),
   KEY `idx` (`blog_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- ----------------------------
--- Records of comments
--- ----------------------------
-BEGIN;
-INSERT INTO `comments` VALUES (4, 35, 1577716203269, 1577716203269, 'd w', -1, 's', 'da s', '0');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for every_day
@@ -91,14 +78,7 @@ CREATE TABLE `tag_blog_mapping` (
   UNIQUE KEY `uq_tag_id_blog_id` (`tag_id`,`blog_id`),
   KEY `idx_tag_id` (`tag_id`) USING BTREE,
   KEY `idx_blog_id` (`blog_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- ----------------------------
--- Records of tag_blog_mapping
--- ----------------------------
-BEGIN;
-INSERT INTO `tag_blog_mapping` VALUES (12, 8, 1577716720164, 1577716720164, 36);
-COMMIT;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Table structure for tags
@@ -110,13 +90,6 @@ CREATE TABLE `tags` (
   `ctime` double(17,0) NOT NULL,
   `utime` double(17,0) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- ----------------------------
--- Records of tags
--- ----------------------------
-BEGIN;
-INSERT INTO `tags` VALUES (8, 'blog', 1577716720161, 1577716720161);
-COMMIT;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 SET FOREIGN_KEY_CHECKS = 1;
