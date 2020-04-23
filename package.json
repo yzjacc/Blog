@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/clflovepanda/PersonalBlog#readme",
   "dependencies": {
+    "dva-logger": "^1.0.0",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "github-markdown-css": "^3.0.1",
